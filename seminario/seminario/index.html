@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário Assustador</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+    <style>
+        .jumpscare {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: black;
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: scare 0.5s forwards;
+            overflow: hidden; 
+        }
+        
+        .jumpscare img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+        }
+            
+        .voltar {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1001;
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    
+        @keyframes scare {
+            0% {
+                transform: scale(1);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <h1>Formulário Dahora</h1>
+        <form id="meuFormulario">
+            <div class="form-group">
+                <label for="nome">Seu Nome:</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+            <div class="form-group">
+                <label for="idade">Sua Idade:</label>
+                <input type="number" id="idade" name="idade" required>
+            </div>
+            <button type="button" class="btn-enviar" id="enviar">Enviar</button>
+        </form>
+    </div>
+
+    <div class="jumpscare" id="jumpscare">
+        <img src="jumpscare.jpg" alt="Jumpscare">
+    </div>
+    <button class="voltar" id="voltar">Voltar</button>
+
+    <audio id="jumpscareAudio" preload="auto">
+        <source src="myinstants.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        document.getElementById('enviar').addEventListener('click', function() {
+            const jumpscare = document.getElementById('jumpscare');
+            const audio = document.getElementById('jumpscareAudio');
+            const voltar = document.getElementById('voltar');
+            const formulario = document.getElementById('meuFormulario');
+
+            // Oculta o formulário e exibe o jumpscare
+            formulario.style.display = 'none';
+            jumpscare.style.display = 'flex';
+            voltar.style.display = 'block';
+
+            // Toca o áudio
+            audio.play().catch(e => {
+                console.warn('Autoplay bloqueado. Aguardando interação do usuário.');
+                document.body.addEventListener('click', function() {
+                    audio.play();
+                }, { once: true });
+            });
+        });
+
+        document.getElementById('voltar').addEventListener('click', function() {
+            const jumpscare = document.getElementById('jumpscare');
+            const voltar = document.getElementById('voltar');
+            const formulario = document.getElementById('meuFormulario');
+
+            // Oculta o jumpscare e exibe o formulário
+            jumpscare.style.display = 'none';
+            voltar.style.display = 'none';
+            formulario.style.display = 'block';
+        });
+        
+    </script>
+</body>
+</html>
